@@ -1,0 +1,66 @@
+
+app_config:
+  app_name: gowebdemo
+  debug: true
+  access_log: true
+  http_addr: 0.0.0.0
+  http_port: 9091
+
+log_config:
+  access_log: data/log/access.log
+  error_log: data/log/error.log
+  server_log: data/log/server.log
+  level: debug  # debug info warn error dpanic panic fatal
+  max_size: 1  # 进行切割之前,日志文件的最大大小(MB为单位)
+  max_age: 5  # 保留旧文件的最大个数
+  max_backups: 30  # 保留旧文件的最大天数
+  compress: false  # 是否压缩/归档旧文件
+
+mysql_config_list:
+  -
+    name: default
+    log_level: info # info warn silent error
+    slow_threshold: 100  # 慢日志阀值 毫秒
+    master: root:mysql@tcp(127.0.0.1:3307)/test_go?charset=utf8mb4&parseTime=true&loc=Local&max_idle=20&max_active=20&max_lifetime_sec=1500
+    slave_list:
+      - root:mysql@tcp(127.0.0.1:3307)/test_go?charset=utf8mb4&parseTime=true&loc=Local&max_idle=20&max_active=20&max_lifetime_sec=1500
+      - root:mysql@tcp(127.0.0.1:3307)/test_go?charset=utf8mb4&parseTime=true&loc=Local&max_idle=20&max_active=20&max_lifetime_sec=1500
+
+redis_config_list:
+  -
+    name: default
+    addr: 127.0.0.1:6379  # 节点地址加端口，如127.0.0.1:6379
+    password:  # 密码，无则留空
+    username:  # 账号，无则留空
+    db: 0  # DB
+    max_retries: 0  # 命令执行失败时，最多重试多少次，默认为3次,-1表示不重试
+    pool_size: 10  # 连接池大小，默认值为10*CPU个数,10 * runtime.NumCPU
+    min_idle_conns: 100  # 在启动阶段创建指定数量的Idle连接，并长期维持idle状态的连接数不少于指定数量
+    max_conn_age: 0  # 连接存活时长，从创建开始计时，超过指定时长则关闭连接，默认为0，即不关闭存活时长较长的连接
+    dial_timeout: 5  # 连接超时时间，默认为5秒,单位为秒
+    read_timeout: 5  # socket读取超时时间，-1为不限制超时,默认为3s,单位为秒
+    write_timeout: 5  # socket写超时时间，默认值跟readtimeout一致
+    pool_timeout: 6  # 当所有连接都处在繁忙状态时，客户端等待可用连接的最大等待时长，默认为读超时+1秒
+    idle_timeout: 300  # 闲置超时，默认5分钟，-1表示取消闲置超时检查
+    idle_check_frequency: 60  # 闲置连接检查的周期，默认为1分钟，-1表示不做周期性检查，只在客户端获取连接时对闲置连接进行处理
+
+redis_cluste_config_list:
+  -
+    name: default
+    addrs:  # 集群地址，格式为 ip:端口
+      - "127.0.0.1:7001"
+      - "127.0.0.1:7002"
+    password:  # 集群密码
+    username:  # 集群账号
+    route_by_latency: false       #默认false,为true则ReadOnly自动置为true,表示在处理只读命令时，可以在一个slot对应的主节点和所有从节点中选取Ping()的响应时长最短的一个节点来读数据
+    route_randomly: false        #默认false,为true则ReadOnly自动置为true,表示在处理只读命令时，可以在一个slot对应的主节点和所有从节点中随机挑选一个节点来读数据
+    max_retries: 0               #命令执行失败时，最多重试多少次，默认为0即不重试
+    dial_timeout: 0              #连接建立超时时间，默认5秒
+    read_timeout: 0              #读超时，默认3秒， -1表示取消读超时
+    write_timeout: 0             #写超时，默认等于读超时，-1表示取消读超时
+    pool_size: 0                 #连接池最大socket连接数，默认为5倍CPU数， 5 * runtime.NumCPU,注意这个是每个节点的连接数，不是整个集群的链接数
+    min_idle_conns: 0             #在启动阶段创建指定数量的Idle连接，并长期维持idle状态的连接数不少于指定数量
+    pool_timeout: 0              #当所有连接都处在繁忙状态时，客户端等待可用连接的最大等待时长，默认为读超时+1秒
+    idle_timeout: 0              #闲置超时，默认5分钟，-1表示取消闲置超时检查
+    max_conn_age: 0               #连接存活时长，从创建开始计时，超过指定时长则关闭连接，默认为0，即不关闭存活时长较长的连接
+    idle_check_frequency: 0       #闲置连接检查的周期，无默认值，由ClusterClient统一对所管理的redis.Client进行闲置连接检查。初始化时传递-1给redis.Client表示redis.Client自己不用做周期性检查，只在客户端获取连接时对闲置连接进行处理
