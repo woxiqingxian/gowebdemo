@@ -35,7 +35,7 @@ type RedisConf struct {
 	Name               string `mapstructure:"name"`                 // 名称
 	Addr               string `mapstructure:"addr"`                 // 节点地址加端口，如127.0.0.1:6379
 	Password           string `mapstructure:"password"`             // 密码,无则为空
-	UserName           string `mapstructure:"username"`             // 账号,无则填空
+	Username           string `mapstructure:"username"`             // 账号,无则填空
 	Db                 int    `mapstructure:"db"`                   // 选择db
 	MaxRetries         int    `mapstructure:"max_retries"`          // 命令执行失败时，最多重试多少次，默认为3次,-1表示不重试
 	PoolSize           int    `mapstructure:"pool_size"`            // 连接池大小，默认值为10*CPU个数
@@ -53,7 +53,7 @@ type RedisClusterConf struct {
 	Name               string   `mapstructure:"name"`                 // 名称
 	Addrs              []string `mapstructure:"addrs"`                //集群节点地址 ip:port
 	Password           string   `mapstructure:"password"`             //集群密码
-	UserName           string   `mapstructure:"username"`             //集群账号
+	Username           string   `mapstructure:"username"`             //集群账号
 	MaxRetries         int      `mapstructure:"max_retries"`          //命令执行失败时，最多重试多少次，默认为0即不重试
 	RouteByLatency     bool     `mapstructure:"route_by_latency"`     //默认false,为true则ReadOnly自动置为true,表示在处理只读命令时，可以在一个slot对应的主节点和所有从节点中选取Ping()的响应时长最短的一个节点来读数据
 	RouteRandomly      bool     `mapstructure:"route_randomly"`       //默认false,为true则ReadOnly自动置为true,表示在处理只读命令时，可以在一个slot对应的主节点和所有从节点中随机挑选一个节点来读数据

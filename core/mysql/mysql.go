@@ -69,14 +69,14 @@ func newMySQLGroup(mysqlConfig config.MysqlConf) (*MySQLGroup, error) {
 	var err error
 	mysqlGroup := MySQLGroup{name: mysqlConfig.Name}
 
-	mysqlGroup.master, err = openDB(mysqlConfig.Master, mysqlConfig.LogLevel, mysqlConfig.SlowThreshold)
+	mysqlGroup.master, err = openConn(mysqlConfig.Master, mysqlConfig.LogLevel, mysqlConfig.SlowThreshold)
 	if err != nil {
 		return nil, err
 	}
 	mysqlGroup.slaveList = make([]*gorm.DB, 0, len(mysqlConfig.SlaveList))
 	mysqlGroup.total = 0
 	for _, slave := range mysqlConfig.SlaveList {
-		c, err := openDB(slave, mysqlConfig.LogLevel, mysqlConfig.SlowThreshold)
+		c, err := openConn(slave, mysqlConfig.LogLevel, mysqlConfig.SlowThreshold)
 		if err != nil {
 			return nil, err
 		}
@@ -87,7 +87,7 @@ func newMySQLGroup(mysqlConfig config.MysqlConf) (*MySQLGroup, error) {
 	return &mysqlGroup, nil
 }
 
-func openDB(dsn string, logLevel string, slowThreshold int) (*gorm.DB, error) {
+func openConn(dsn string, logLevel string, slowThreshold int) (*gorm.DB, error) {
 	var err error
 
 	// dsn 解析

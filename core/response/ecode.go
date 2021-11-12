@@ -12,8 +12,7 @@ var (
 
 // 通用错误码
 var (
-	ErrNil   = ErrorCode(0, "成功")
-	ErrParam = ErrorCode(400, "参数错误")
+	ErrNil = ErrorCode(0, "成功")
 )
 
 func LoadErrorCode(code int) string {
@@ -29,7 +28,6 @@ func ErrorCode(code int, msg string) int {
 	if _, ok := codeMsgMap.Load(code); ok {
 		logger.ServerLogger.Panic(fmt.Sprintf("ErrorCode %d already exist ", code))
 	}
-	fmt.Println("----", code, msg)
 	codeMsgMap.Store(code, msg)
 	return code
 }

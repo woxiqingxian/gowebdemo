@@ -6,6 +6,7 @@ import (
 	"gowebdemo/core/logger"
 	"gowebdemo/core/middleware"
 	"gowebdemo/core/mysql"
+	"gowebdemo/core/redis"
 	"gowebdemo/router"
 	"syscall"
 
@@ -26,10 +27,12 @@ func InitServer() {
 	logger.ServerLogger.Info("Mysql SetUp Success")
 
 	// 初始化redis
+	redis.SetUp()
+	logger.ServerLogger.Info("Redis SetUp Success")
+
 	// 初始化redis cluter
 	// 初始化kafka
 	// ....
-
 }
 
 func RunHttpServer(shutdownCallbackFunc func()) {
