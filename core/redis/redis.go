@@ -22,6 +22,7 @@ func SetUp() {
 			logger.ServerLogger.Panic(fmt.Sprintf("Init Redis Error err:%s", err))
 		}
 		redisClientMap.LoadOrStore(redisConfig.Name, redisConn)
+		logger.ServerLogger.Info(fmt.Sprintf("redis %s setup success", redisConfig.Name))
 	}
 	return
 }

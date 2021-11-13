@@ -12,7 +12,7 @@
 - [x] WEB 服务框架 Gin [https://github.com/gin-gonic/gin](https://github.com/gin-gonic/gin)
 - [x] MySQL 数据库 ORM 工具 GORM [https://github.com/go-gorm/gorm](https://github.com/go-gorm/gorm)
 - [x] 配置文件操作 viper [https://github.com/spf13/viper](https://github.com/spf13/viper)
-- [ ] Redis 和 RedisCluster
+- [x] Redis 和 RedisCluster
 - [ ] Kafka 队列 go-redis [https://github.com/go-redis/redis](https://github.com/go-redis/redis)
 - [x] log 日志 zap + lumberjack
   * zap [https://github.com/uber-go/zap](https://github.com/uber-go/zap)

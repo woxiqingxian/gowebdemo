@@ -8,7 +8,7 @@ type ServerConf struct {
 	AppConfig             AppConf            `mapstructure:"app_config"`
 	LogConfig             LogConf            `mapstructure:"log_config"`
 	RedisConfigList       []RedisConf        `mapstructure:"redis_config_list"`
-	RedisClusteConfigList []RedisClusterConf `mapstructure:"redis_cluste_config_list"`
+	RedisClusteConfigList []RedisClusterConf `mapstructure:"redis_cluster_config_list"`
 	MysqlConfigList       []MysqlConf        `mapstructure:"mysql_config_list"`
 }
 

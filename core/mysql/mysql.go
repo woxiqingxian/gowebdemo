@@ -60,12 +60,11 @@ func SetUp() {
 			logger.ServerLogger.Panic(fmt.Sprintf("SetUp mysql Error %s", err))
 		}
 		mysqlClientMap.LoadOrStore(mysqlConfig.Name, mysqlGroup)
+		logger.ServerLogger.Info(fmt.Sprintf("mysql %s setup success", mysqlConfig.Name))
 	}
 }
 
 func newMySQLGroup(mysqlConfig config.MysqlConf) (*MySQLGroup, error) {
-	logger.ServerLogger.Info(fmt.Sprintf("Init sql group name [%s], master [%s], slave [%v]", mysqlConfig.Name, mysqlConfig.Master, mysqlConfig.SlaveList))
-
 	var err error
 	mysqlGroup := MySQLGroup{name: mysqlConfig.Name}
 

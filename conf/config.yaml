@@ -44,13 +44,16 @@ redis_config_list:
     idle_timeout: 300  # 闲置超时，默认5分钟，-1表示取消闲置超时检查
     idle_check_frequency: 60  # 闲置连接检查的周期，默认为1分钟，-1表示不做周期性检查，只在客户端获取连接时对闲置连接进行处理
 
-redis_cluste_config_list:
+redis_cluster_config_list:
   -
     name: default
     addrs:  # 集群地址，格式为 ip:端口
       - "127.0.0.1:7001"
       - "127.0.0.1:7002"
-    password:  # 集群密码
+      - "127.0.0.1:7003"
+      - "127.0.0.1:7004"
+      - "127.0.0.1:7005"
+    password: pass.123  # 集群密码
     username:  # 集群账号
     route_by_latency: false       #默认false,为true则ReadOnly自动置为true,表示在处理只读命令时，可以在一个slot对应的主节点和所有从节点中选取Ping()的响应时长最短的一个节点来读数据
     route_randomly: false        #默认false,为true则ReadOnly自动置为true,表示在处理只读命令时，可以在一个slot对应的主节点和所有从节点中随机挑选一个节点来读数据

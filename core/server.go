@@ -7,6 +7,7 @@ import (
 	"gowebdemo/core/middleware"
 	"gowebdemo/core/mysql"
 	"gowebdemo/core/redis"
+	"gowebdemo/core/rediscluster"
 	"gowebdemo/router"
 	"syscall"
 
@@ -31,6 +32,9 @@ func InitServer() {
 	logger.ServerLogger.Info("Redis SetUp Success")
 
 	// 初始化redis cluter
+	rediscluster.SetUp()
+	logger.ServerLogger.Info("RedisCluster SetUp Success")
+
 	// 初始化kafka
 	// ....
 }
@@ -61,7 +65,9 @@ func RunHttpServer(shutdownCallbackFunc func()) {
 		ginEngine.Use(logger.Ginzap())
 	}
 	// recover掉项目可能出现的panic
-	ginEngine.Use(logger.RecoveryWithZap())
+	if !config.ServerConfig.AppConfig.Debug {
+		ginEngine.Use(logger.RecoveryWithZap())
+	}
 
 	// 加载路由
 	router.Register(ginEngine)
