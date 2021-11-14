@@ -5,9 +5,6 @@ import (
 	"gowebdemo/core/config"
 	"gowebdemo/core/logger"
 	"gowebdemo/core/middleware"
-	"gowebdemo/core/mysql"
-	"gowebdemo/core/redis"
-	"gowebdemo/core/rediscluster"
 	"gowebdemo/router"
 	"syscall"
 
@@ -15,35 +12,13 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func InitServer() {
-	// 解析配置
-	config.SetUp()
-
-	// 初始化日志组件
-	logger.SetUp()
-	defer logger.ServerLogger.Info("Logger SetUp Success")
-
-	// 初始化mysql
-	mysql.SetUp()
-	logger.ServerLogger.Info("Mysql SetUp Success")
-
-	// 初始化redis
-	redis.SetUp()
-	logger.ServerLogger.Info("Redis SetUp Success")
-
-	// 初始化redis cluter
-	rediscluster.SetUp()
-	logger.ServerLogger.Info("RedisCluster SetUp Success")
-
-	// 初始化kafka
-	// ....
-}
-
-func RunHttpServer(shutdownCallbackFunc func()) {
+func RunHttpServer(shutdownCallbackFuncList ...func()) {
 	// 服务关闭回调
 	shutdownBySignal := func() {
 		// 给业务的回调
-		shutdownCallbackFunc()
+		for _, fc := range shutdownCallbackFuncList {
+			fc()
+		}
 		// 日志flush
 		logger.LoggerSync()
 	}
@@ -89,5 +64,4 @@ func RunHttpServer(shutdownCallbackFunc func()) {
 	if err != nil {
 		logger.ServerLogger.Error(fmt.Sprintf("server start failed, error: %s", err.Error()))
 	}
-
 }

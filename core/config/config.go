@@ -11,7 +11,7 @@ import (
 
 func SetUp() {
 
-	ServerConfig.AppConfigPath = *flag.String("config", "conf/config.yaml", "Configuration file")
+	flag.StringVar(&ServerConfig.AppConfigPath, "config", "conf/config.yaml", "Configuration file")
 	flag.Parse()
 
 	var err error
