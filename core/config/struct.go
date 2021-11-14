@@ -21,14 +21,13 @@ type AppConf struct {
 }
 
 type LogConf struct {
-	AccessLog  string `mapstructure:"access_log"`  // 访问日志存放路径，off关闭
-	ErrorLog   string `mapstructure:"error_log"`   // 服务错误日志以及程序运行过程调用logger模块方法打印日志都会存放在此文件,默认存在应用根目录下data/log/error.log
-	ServerLog  string `mapstructure:"server_log"`  // 服务启动/关闭/panic日志存放,默认存在应用根目录下data/log/server.log
-	Level      string `mapstructure:"level"`       // 日志等级,支持 debug/info/warn/error/dpanic/panic/fatal 共7种日志级别,级别从左往右为从小到大
-	MaxSize    int    `mapstructure:"max_size"`    // 日志轮转配置, 单位MB,表示最大文件大,超出则会新生成一个日志文件,默认为100MB
-	MaxAge     int    `mapstructure:"max_age"`     // 日志轮转配置, 文件最多保存多少天,单位天,默认不移除
-	MaxBackups int    `mapstructure:"max_backups"` // 日志轮转配置, 日志文件最多保存多少个备份,默认保留所有日志文件
-	Compress   bool   `mapstructure:"compress"`    // 日志轮转配置, 决定是否压缩日志文件存放
+	LogNameList []string `mapstructure:"log_name_list"` // 自定义日志文件
+	LogDir      string   `mapstructure:"log_dir"`       // 日志路径
+	Level       string   `mapstructure:"level"`         // 日志等级,支持 debug/info/warn/error/dpanic/panic/fatal 共7种日志级别,级别从左往右为从小到大
+	MaxSize     int      `mapstructure:"max_size"`      // 日志轮转配置, 单位MB,表示最大文件大,超出则会新生成一个日志文件,默认为100MB
+	MaxAge      int      `mapstructure:"max_age"`       // 日志轮转配置, 文件最多保存多少天,单位天,默认不移除
+	MaxBackups  int      `mapstructure:"max_backups"`   // 日志轮转配置, 日志文件最多保存多少个备份,默认保留所有日志文件
+	Compress    bool     `mapstructure:"compress"`      // 日志轮转配置, 决定是否压缩日志文件存放
 }
 
 type RedisConf struct {

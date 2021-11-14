@@ -2,27 +2,46 @@ package logger
 
 import (
 	"context"
+	"fmt"
 	"gowebdemo/core/config"
+	"path"
+	"sync"
 
 	"github.com/natefinch/lumberjack"
 	"go.uber.org/zap"
 	"go.uber.org/zap/zapcore"
 )
 
-var ServerLogger *zap.Logger
-var AccessLogger *zap.Logger
-var ErrorLogger *zap.Logger
+var loggerMap sync.Map
+
+var serverLogName string = "server"
+var accessLogName string = "access"
+var errorLogName string = "error"
 
 func SetUp() {
-	ServerLogger = initLogger(config.ServerConfig.LogConfig.ServerLog)
-	AccessLogger = initLogger(config.ServerConfig.LogConfig.AccessLog)
-	ErrorLogger = initLogger(config.ServerConfig.LogConfig.ErrorLog)
+	logNameList := []string{}
+
+	defaultLogNameList := []string{serverLogName, accessLogName, errorLogName}
+	logNameList = append(logNameList, defaultLogNameList...)
+	logNameList = append(logNameList, config.ServerConfig.LogConfig.LogNameList...)
+
+	for _, logName := range logNameList {
+		logFilePath := path.Join(config.ServerConfig.LogConfig.LogDir, logName+".log")
+		fmt.Println(logFilePath)
+		logger := initLogger(logFilePath)
+		loggerMap.Store(logName, logger)
+
+	}
+	return
 }
 
 func LoggerSync() {
-	ServerLogger.Sync()
-	AccessLogger.Sync()
-	ErrorLogger.Sync()
+	loggerMap.Range(func(key, value interface{}) bool {
+		if logger, ok := value.(*zap.Logger); ok {
+			logger.Sync()
+		}
+		return true
+	})
 }
 
 func initLogger(logFilePath string) *zap.Logger {
@@ -69,11 +88,32 @@ func initLogger(logFilePath string) *zap.Logger {
 	return logger
 }
 
-func Log(ctx context.Context) *zap.SugaredLogger {
-	return loadLogWithTraceId(ctx, ErrorLogger).Sugar()
+func Log(ctx context.Context, nameList ...string) *zap.SugaredLogger {
+	logName := errorLogName
+	if len(nameList) == 1 {
+		logName = nameList[0]
+	}
+	return loadLogWithTraceId(ctx, logName).Sugar()
 }
 
-func loadLogWithTraceId(ctx context.Context, log *zap.Logger) *zap.Logger {
+func ServerLog() *zap.Logger {
+	return loadLog(serverLogName)
+}
+
+func MysqlLog() *zap.Logger {
+	return loadLog(errorLogName)
+}
+
+func loadLogWithTraceId(ctx context.Context, logName string) *zap.Logger {
+	logger := loadLog(logName)
 	traceId, _ := ctx.Value("traceId").(string)
-	return log.With(zap.String("traceId", traceId))
+	return logger.With(zap.String("traceId", traceId))
+}
+
+func loadLog(logName string) *zap.Logger {
+	var logger *zap.Logger
+	if val, ok := loggerMap.Load(logName); ok {
+		logger, _ = val.(*zap.Logger)
+	}
+	return logger
 }

@@ -48,7 +48,7 @@ func RunHttpServer(shutdownCallbackFuncList ...func()) {
 	router.Register(ginEngine)
 
 	// 启动服务器(使用endless)
-	logger.ServerLogger.Info("server started success")
+	logger.ServerLog().Info("server started success")
 	addr := fmt.Sprintf("%s:%d", config.ServerConfig.AppConfig.HttpAddr, config.ServerConfig.AppConfig.HttpPort)
 	httpServer := endless.NewServer(addr, ginEngine)
 	httpServer.SignalHooks[endless.PRE_SIGNAL][syscall.SIGTERM] = append(
@@ -62,6 +62,6 @@ func RunHttpServer(shutdownCallbackFuncList ...func()) {
 
 	err := httpServer.ListenAndServe()
 	if err != nil {
-		logger.ServerLogger.Error(fmt.Sprintf("server start failed, error: %s", err.Error()))
+		logger.ServerLog().Error(fmt.Sprintf("server start failed, error: %s", err.Error()))
 	}
 }

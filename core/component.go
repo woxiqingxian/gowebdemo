@@ -14,19 +14,19 @@ func InitComponent() {
 
 	// 初始化日志组件
 	logger.SetUp()
-	logger.ServerLogger.Info("Logger SetUp Success")
+	logger.ServerLog().Info("Logger SetUp Success")
 
 	// 初始化mysql
 	mysql.SetUp()
-	logger.ServerLogger.Info("Mysql SetUp Success")
+	logger.ServerLog().Info("Mysql SetUp Success")
 
 	// 初始化redis
 	redis.SetUp()
-	logger.ServerLogger.Info("Redis SetUp Success")
+	logger.ServerLog().Info("Redis SetUp Success")
 
 	// 初始化redis cluter
 	rediscluster.SetUp()
-	logger.ServerLogger.Info("RedisCluster SetUp Success")
+	logger.ServerLog().Info("RedisCluster SetUp Success")
 
 	// 初始化kafka
 	// ....

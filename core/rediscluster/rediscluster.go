@@ -19,10 +19,10 @@ func SetUp() {
 	for _, redisClusterConfig := range config.ServerConfig.RedisClusteConfigList {
 		redisClusterConn, err := openConn(redisClusterConfig)
 		if err != nil {
-			logger.ServerLogger.Panic(fmt.Sprintf("Init RedisCluster Error err:%s", err))
+			logger.ServerLog().Panic(fmt.Sprintf("Init RedisCluster Error err:%s", err))
 		}
 		redisClusterClientMap.LoadOrStore(redisClusterConfig.Name, redisClusterConn)
-		logger.ServerLogger.Info(fmt.Sprintf("rediscluster %s setup success", redisClusterConfig.Name))
+		logger.ServerLog().Info(fmt.Sprintf("rediscluster %s setup success", redisClusterConfig.Name))
 	}
 	return
 }

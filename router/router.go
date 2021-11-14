@@ -14,6 +14,7 @@ import (
 
 func ping(ctx *gin.Context) {
 	logger.Log(ctx).Infof("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
+	logger.Log(ctx, "custom").Infof("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa")
 
 	type user struct {
 		Id   int64  `json:"id"`

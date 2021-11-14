@@ -18,7 +18,7 @@ import (
 
 func Ginzap() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		logger := loadLogWithTraceId(c, AccessLogger)
+		logger := loadLogWithTraceId(c, accessLogName)
 
 		start := time.Now()
 		// some evil middlewares modify this values
@@ -54,7 +54,7 @@ func Ginzap() gin.HandlerFunc {
 func RecoveryWithZap() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		defer func() {
-			logger := loadLogWithTraceId(c, AccessLogger)
+			logger := loadLogWithTraceId(c, accessLogName)
 
 			if err := recover(); err != nil {
 				// Check for a broken connection, as it is not really a

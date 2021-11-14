@@ -19,10 +19,10 @@ func SetUp() {
 	for _, redisConfig := range config.ServerConfig.RedisConfigList {
 		redisConn, err := openConn(redisConfig)
 		if err != nil {
-			logger.ServerLogger.Panic(fmt.Sprintf("Init Redis Error err:%s", err))
+			logger.ServerLog().Panic(fmt.Sprintf("Init Redis Error err:%s", err))
 		}
 		redisClientMap.LoadOrStore(redisConfig.Name, redisConn)
-		logger.ServerLogger.Info(fmt.Sprintf("redis %s setup success", redisConfig.Name))
+		logger.ServerLog().Info(fmt.Sprintf("redis %s setup success", redisConfig.Name))
 	}
 	return
 }

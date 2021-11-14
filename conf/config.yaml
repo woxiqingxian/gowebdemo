@@ -7,9 +7,9 @@ app_config:
   http_port: 9091
 
 log_config:
-  access_log: data/log/access.log
-  error_log: data/log/error.log
-  server_log: data/log/server.log
+  log_name_list:
+    - custom
+  log_dir: data/log/
   level: debug  # debug info warn error dpanic panic fatal
   max_size: 50  # 进行切割之前,日志文件的最大大小(MB为单位)
   max_age: 5  # 保留旧文件的最大个数

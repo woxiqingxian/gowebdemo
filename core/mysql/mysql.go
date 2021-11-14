@@ -57,10 +57,10 @@ func SetUp() {
 
 		mysqlGroup, err := newMySQLGroup(mysqlConfig)
 		if err != nil {
-			logger.ServerLogger.Panic(fmt.Sprintf("SetUp mysql Error %s", err))
+			logger.ServerLog().Panic(fmt.Sprintf("SetUp mysql Error %s", err))
 		}
 		mysqlClientMap.LoadOrStore(mysqlConfig.Name, mysqlGroup)
-		logger.ServerLogger.Info(fmt.Sprintf("mysql %s setup success", mysqlConfig.Name))
+		logger.ServerLog().Info(fmt.Sprintf("mysql %s setup success", mysqlConfig.Name))
 	}
 }
 
@@ -91,6 +91,7 @@ func openConn(dsn string, logLevel string, slowThreshold int) (*gorm.DB, error) 
 
 	// dsn 解析
 	dsnParse, err := goSqlDriverMysql.ParseDSN(dsn)
+
 	if err != nil {
 		return nil, err
 	}
@@ -125,7 +126,7 @@ func openConn(dsn string, logLevel string, slowThreshold int) (*gorm.DB, error) 
 			IgnoreRecordNotFoundError: true,
 			Colorful:                  false,
 		},
-		*logger.ErrorLogger,
+		logger.MysqlLog(),
 	)
 
 	//打开连接

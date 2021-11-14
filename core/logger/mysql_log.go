@@ -11,7 +11,7 @@ import (
 	"gorm.io/gorm/utils"
 )
 
-func NewMysqlLogger(config gormLogger.Config, writerLog zap.Logger) gormLogger.Interface {
+func NewMysqlLogger(config gormLogger.Config, writerLog *zap.Logger) gormLogger.Interface {
 	var (
 		infoStr      = "%s\n[info] "
 		warnStr      = "%s\n[warn] "
@@ -35,7 +35,7 @@ func NewMysqlLogger(config gormLogger.Config, writerLog zap.Logger) gormLogger.I
 
 type logger struct {
 	gormLogger.Config
-	writer                              zap.Logger
+	writer                              *zap.Logger
 	infoStr, warnStr, errStr            string
 	traceStr, traceErrStr, traceWarnStr string
 }
