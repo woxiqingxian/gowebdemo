@@ -5,15 +5,15 @@
 
 总而言之，言而总之，干脆就自己搞一个吧，所以这玩意就诞生啦！
 
-## 干了啥？
+## 要干啥？
 
 其实就是整合了许多 Web 开发 API 所必要的组件：
 
 - [x] WEB 服务框架 Gin [https://github.com/gin-gonic/gin](https://github.com/gin-gonic/gin)
 - [x] MySQL 数据库 ORM 工具 GORM [https://github.com/go-gorm/gorm](https://github.com/go-gorm/gorm)
 - [x] 配置文件操作 viper [https://github.com/spf13/viper](https://github.com/spf13/viper)
-- [x] Redis 和 RedisCluster
-- [ ] Kafka 队列 go-redis [https://github.com/go-redis/redis](https://github.com/go-redis/redis)
+- [x] Redis 和 RedisCluster go-redis [https://github.com/go-redis/redis](https://github.com/go-redis/redis)
+- [ ] Kafka 队列 sarama [https://github.com/Shopify/sarama](https://github.com/Shopify/sarama)
 - [x] log 日志 zap + lumberjack
   * zap [https://github.com/uber-go/zap](https://github.com/uber-go/zap)
   * lumberjack [https://github.com/natefinch/lumberjack](https://github.com/natefinch/lumberjack)
