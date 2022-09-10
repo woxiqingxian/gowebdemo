@@ -15,6 +15,7 @@ var (
 	redisClusterClientMap sync.Map
 )
 
+// SetUp redisCluster 组件初始化
 func SetUp() {
 	for _, redisClusterConfig := range config.ServerConfig.RedisClusteConfigList {
 		redisClusterConn, err := openConn(redisClusterConfig)

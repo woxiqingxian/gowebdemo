@@ -6,15 +6,18 @@ import (
 	"gorm.io/gorm"
 )
 
-type SQL struct {
+// SQLConn struct
+type SQLConn struct {
 	name string
 }
 
-func InitSQL(name string) *SQL {
-	return &SQL{name}
+// GetSQLConn 获取 sql 链接
+func GetSQLConn(name string) *SQLConn {
+	return &SQLConn{name}
 }
 
-func (self *SQL) Master(ctx context.Context) *gorm.DB {
+// Master 获取主库链接
+func (self *SQLConn) Master(ctx context.Context) *gorm.DB {
 	if client, ok := mysqlClientMap.Load(self.name); ok {
 		if v, ok := client.(*MySQLGroup); ok {
 			return v.Master().WithContext(ctx)
@@ -23,7 +26,8 @@ func (self *SQL) Master(ctx context.Context) *gorm.DB {
 	return nil
 }
 
-func (self *SQL) Slave(ctx context.Context) *gorm.DB {
+// Slave 获取从库链接
+func (self *SQLConn) Slave(ctx context.Context) *gorm.DB {
 	if client, ok := mysqlClientMap.Load(self.name); ok {
 		if v, ok := client.(*MySQLGroup); ok {
 			return v.Slave().WithContext(ctx)

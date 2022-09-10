@@ -8,6 +8,7 @@ import (
 	"gowebdemo/core/rediscluster"
 )
 
+// InitComponent 初始化组件
 func InitComponent() {
 	// 解析配置
 	config.SetUp()

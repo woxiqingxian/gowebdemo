@@ -2,7 +2,6 @@ package logger
 
 import (
 	"context"
-	"fmt"
 	"gowebdemo/core/config"
 	"path"
 	"sync"
@@ -18,6 +17,7 @@ var serverLogName string = "server"
 var accessLogName string = "access"
 var errorLogName string = "error"
 
+// SetUp logger 初始化
 func SetUp() {
 	logNameList := []string{}
 
@@ -27,15 +27,15 @@ func SetUp() {
 
 	for _, logName := range logNameList {
 		logFilePath := path.Join(config.ServerConfig.LogConfig.LogDir, logName+".log")
-		fmt.Println(logFilePath)
+		// fmt.Println(logFilePath)
 		logger := initLogger(logFilePath)
 		loggerMap.Store(logName, logger)
-
 	}
 	return
 }
 
-func LoggerSync() {
+// FlushSync 日志 flush 到磁盘
+func FlushSync() {
 	loggerMap.Range(func(key, value interface{}) bool {
 		if logger, ok := value.(*zap.Logger); ok {
 			logger.Sync()
@@ -88,26 +88,29 @@ func initLogger(logFilePath string) *zap.Logger {
 	return logger
 }
 
+// Log 日志记录
 func Log(ctx context.Context, nameList ...string) *zap.SugaredLogger {
 	logName := errorLogName
 	if len(nameList) == 1 {
 		logName = nameList[0]
 	}
-	return loadLogWithTraceId(ctx, logName).Sugar()
+	return loadLogWithTraceID(ctx, logName).Sugar()
 }
 
+// ServerLog 服务本身专用日志入口
 func ServerLog() *zap.Logger {
 	return loadLog(serverLogName)
 }
 
+// MysqlLog 日志专用入口
 func MysqlLog() *zap.Logger {
 	return loadLog(errorLogName)
 }
 
-func loadLogWithTraceId(ctx context.Context, logName string) *zap.Logger {
+func loadLogWithTraceID(ctx context.Context, logName string) *zap.Logger {
 	logger := loadLog(logName)
-	traceId, _ := ctx.Value("traceId").(string)
-	return logger.With(zap.String("traceId", traceId))
+	traceID, _ := ctx.Value("traceID").(string)
+	return logger.With(zap.String("traceID", traceID))
 }
 
 func loadLog(logName string) *zap.Logger {

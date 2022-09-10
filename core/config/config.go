@@ -9,6 +9,7 @@ import (
 	"github.com/spf13/viper"
 )
 
+// SetUp config 初始化
 func SetUp() {
 
 	flag.StringVar(&ServerConfig.AppConfigPath, "config", "conf/config.yaml", "Configuration file")

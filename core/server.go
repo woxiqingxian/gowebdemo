@@ -12,7 +12,8 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func RunHttpServer(shutdownCallbackFuncList ...func()) {
+// RunHTTPServer http 服务
+func RunHTTPServer(shutdownCallbackFuncList ...func()) {
 	// 服务关闭回调
 	shutdownBySignal := func() {
 		// 给业务的回调
@@ -20,7 +21,7 @@ func RunHttpServer(shutdownCallbackFuncList ...func()) {
 			fc()
 		}
 		// 日志flush
-		logger.LoggerSync()
+		logger.FlushSync()
 	}
 
 	mode := gin.ReleaseMode

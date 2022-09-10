@@ -15,6 +15,7 @@ var (
 	redisClientMap sync.Map
 )
 
+// SetUp redis 组件初始化
 func SetUp() {
 	for _, redisConfig := range config.ServerConfig.RedisConfigList {
 		redisConn, err := openConn(redisConfig)

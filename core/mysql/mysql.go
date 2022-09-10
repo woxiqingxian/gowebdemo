@@ -19,6 +19,7 @@ var (
 	mysqlClientMap sync.Map
 )
 
+// MySQLGroup 数据库 struct
 type MySQLGroup struct {
 	name      string
 	master    *gorm.DB
@@ -27,12 +28,12 @@ type MySQLGroup struct {
 	total     uint64
 }
 
-// Master返回master实例
+// Master 返回master实例
 func (self *MySQLGroup) Master() *gorm.DB {
 	return self.master
 }
 
-// Slave返回一个slave实例，使用轮转算法
+// Slave 返回一个slave实例，使用轮转算法
 func (self *MySQLGroup) Slave() *gorm.DB {
 	if self.total == 0 {
 		return self.master
@@ -41,7 +42,7 @@ func (self *MySQLGroup) Slave() *gorm.DB {
 	return self.slaveList[next%self.total]
 }
 
-// Instance函数如果isMaster是true， 返回master实例，否则返回slave实例
+// Instance 函数如果isMaster是true， 返回master实例，否则返回slave实例
 func (self *MySQLGroup) Instance(isMaster bool) *gorm.DB {
 	if isMaster {
 		return self.Master()
@@ -49,6 +50,7 @@ func (self *MySQLGroup) Instance(isMaster bool) *gorm.DB {
 	return self.Slave()
 }
 
+// SetUp Mysql 初始化
 func SetUp() {
 	for _, mysqlConfig := range config.ServerConfig.MysqlConfigList {
 		if _, ok := mysqlClientMap.Load(mysqlConfig.Name); ok {
